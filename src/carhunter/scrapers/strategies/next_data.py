@@ -71,7 +71,10 @@ class NextDataStrategy(FetchStrategy):
                     title=str(extracted.get('title', '')),
                     price=extracted.get('price', 0),
                     url=url,
-                    image=extracted.get('image')
+                    image=extracted.get('image'),
+                    location=extracted.get('location'),
+                    mileage=extracted.get('mileage'),
+                    year=extracted.get('year')
                 )
             except Exception as e:
                 # Log error for a specific item but continue

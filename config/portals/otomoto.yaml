@@ -9,6 +9,9 @@ strategies:
       price: node.price.amount.units | int
       url: node.url
       image: node.thumbnail.x1
+      location: node.location.city.name
+      mileage: node.parameters | get_param:mileage
+      year: node.parameters | get_param:year
   - type: html_css
     item_selector: article[data-id]
     fields:

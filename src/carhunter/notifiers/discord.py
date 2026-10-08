@@ -34,8 +34,11 @@ class DiscordNotifier(Notifier):
             "color": 0x00FF00, # Green
             "fields": [
                 {"name": "Cena", "value": f"{listing.price} PLN", "inline": True},
+                {"name": "Rok", "value": listing.year or "Brak", "inline": True},
+                {"name": "Przebieg", "value": listing.mileage or "Brak", "inline": True},
+                {"name": "Lokalizacja", "value": listing.location or "Brak", "inline": True},
                 {"name": "Portal", "value": listing.portal, "inline": True},
-                {"name": "Szukajka", "value": search_id, "inline": True},
+                {"name": "Filtry", "value": search_id, "inline": True},
             ],
             "footer": {"text": "CarHunter"}
         }
@@ -52,7 +55,10 @@ class DiscordNotifier(Notifier):
             "fields": [
                 {"name": "Nowa Cena", "value": f"{listing.price} PLN", "inline": True},
                 {"name": "Stara Cena", "value": f"~~{old_price} PLN~~", "inline": True},
-                {"name": "Szukajka", "value": search_id, "inline": True},
+                {"name": "Rok", "value": listing.year or "Brak", "inline": True},
+                {"name": "Przebieg", "value": listing.mileage or "Brak", "inline": True},
+                {"name": "Lokalizacja", "value": listing.location or "Brak", "inline": True},
+                {"name": "Filtry", "value": search_id, "inline": True},
             ],
             "footer": {"text": "CarHunter"}
         }

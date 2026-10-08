@@ -31,6 +31,7 @@ class MonitorService:
             name: PortalScraper(config, http_client)
             for name, config in portals.items()
         }
+        self._initialized_searches: set[str] = set()
 
     async def start(self):
         self._running = True
@@ -68,13 +69,20 @@ class MonitorService:
         logger.info(f"Checking {search_config.id} on {search_config.portal}")
         listings = await scraper.fetch_listings(search_config.url)
         
+        is_baseline = search_config.id not in self._initialized_searches
+
+        if is_baseline:
+            logger.info(f"Initial run for {search_config.id} - saving baseline of {len(listings)} listings without notifications.")
+            for listing in listings:
+                await self.repository.save(listing)
+            self._initialized_searches.add(search_config.id)
+            return
+        
         for listing in listings:
             exists = await self.repository.exists(listing.composite_id)
             if not exists:
                 logger.info(f"New listing found: {listing.title} ({listing.price} PLN)")
                 await self.repository.save(listing)
-                # Ensure we don't spam on the very first run by checking if DB was completely empty?
-                # A common pattern is to just send it. If user wants baseline, we could track it.
                 await self.event_bus.publish("new_listing", listing, search_config.id)
             else:
                 old_price = await self.repository.get_price(listing.composite_id)

@@ -9,7 +9,7 @@ active_notifiers:
   - discord
 
 searches:
-  - id: "bmw_3_series"
+  - id: "poznan_okazje"
     portal: otomoto
-    url: "https://www.otomoto.pl/osobowe/bmw/seria-3?search%5Border%5D=created_at_first%3Adesc"
+    url: "https://www.otomoto.pl/osobowe/poznan?search%5Bdist%5D=75&search%5Bfilter_enum_country_origin%5D=pl&search%5Bfilter_enum_damaged%5D=0&search%5Bfilter_enum_has_registration%5D=1&search%5Bfilter_enum_has_vin%5D=1&search%5Bfilter_enum_no_accident%5D=1&search%5Bfilter_enum_registered%5D=1&search%5Bfilter_float_mileage%3Ato%5D=100000&search%5Bfilter_float_price%3Ato%5D=30000&search%5Blat%5D=52.40516&search%5Blon%5D=16.92712&search%5Border%5D=created_at_first%3Adesc&search%5Badvanced_search_expanded%5D=true"
 

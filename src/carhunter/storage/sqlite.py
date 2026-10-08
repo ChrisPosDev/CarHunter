@@ -17,6 +17,9 @@ class SqliteListingRepository:
                     price INTEGER,
                     url TEXT,
                     image TEXT,
+                    location TEXT,
+                    mileage TEXT,
+                    year TEXT,
                     discovered_at TIMESTAMP
                 )
             """)
@@ -37,11 +40,13 @@ class SqliteListingRepository:
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute("""
                 INSERT OR REPLACE INTO listings 
-                (composite_id, id, portal, title, price, url, image, discovered_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                (composite_id, id, portal, title, price, url, image, location, mileage, year, discovered_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 listing.composite_id, listing.id, listing.portal, listing.title, 
-                listing.price, listing.url, listing.image, listing.discovered_at
+                listing.price, listing.url, listing.image, 
+                listing.location, listing.mileage, listing.year,
+                listing.discovered_at
             ))
             await db.commit()
 

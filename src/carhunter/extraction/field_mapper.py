@@ -13,9 +13,18 @@ def transform_price(val: Any) -> int:
     # "123 456 PLN" -> 123456
     return transform_int(val)
 
-TRANSFORMS: dict[str, Callable[[Any], Any]] = {
+def transform_get_param(val: Any, param_key: str) -> str | None:
+    if not isinstance(val, list):
+        return None
+    for p in val:
+        if isinstance(p, dict) and p.get('key') == param_key:
+            return p.get('displayValue') or p.get('value')
+    return None
+
+TRANSFORMS: dict[str, Callable[..., Any]] = {
     'int': transform_int,
     'price': transform_price,
+    'get_param': transform_get_param,
 }
 
 def apply_transforms(value: Any, transforms_str: str) -> Any:
@@ -23,10 +32,14 @@ def apply_transforms(value: Any, transforms_str: str) -> Any:
         return value
     
     transforms = [t.strip() for t in transforms_str.split('|')]
-    for t_name in transforms:
-        if not t_name: continue
+    for t_expr in transforms:
+        if not t_expr: continue
+        parts = t_expr.split(':', 1)
+        t_name = parts[0]
+        t_args = parts[1:]
+        
         if t_name in TRANSFORMS:
-            value = TRANSFORMS[t_name](value)
+            value = TRANSFORMS[t_name](value, *t_args)
     return value
 
 def extract_json_path(data: dict | list, path: str) -> Any:
