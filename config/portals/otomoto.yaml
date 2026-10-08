@@ -1,0 +1,20 @@
+name: otomoto
+base_url: https://www.otomoto.pl
+strategies:
+  - type: next_data
+    items_path: props.pageProps.urqlState.*.data.advertSearch.edges
+    fields:
+      id: node.id
+      title: node.title
+      price: node.price.amount.units | int
+      url: node.url
+      image: node.thumbnail.x1
+  - type: html_css
+    item_selector: article[data-id]
+    fields:
+      id: '@data-id'
+      title: h1 a::text
+      price: div[data-testid="ad-price"] span::text | price
+      url: h1 a::attr(href)
+      image: img::attr(src)
+
